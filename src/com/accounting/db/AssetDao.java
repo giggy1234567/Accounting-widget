@@ -160,27 +160,4 @@ public class AssetDao {
 		}
 		return rc;
 	}
-	
-	private int getMaxCount(String ledger_id) {
-		int maxCount = 0;
-		String sql = "select asset_id from [asset] where asset_id like ? "
-				+ "order by asset_id asc";
-		String count = "";
-		ResultSet rset = null;
-		PreparedStatement pstmt = null;
-		try {
-			pstmt = conn.prepareStatement(sql);
-			pstmt.setString(1, ledger_id + "%");
-			rset = pstmt.executeQuery();
-			while(rset.next()) count = rset.getString(1);
-			if (!count.equals("") && count != null) {
-				count = count.trim();
-				maxCount = Integer.valueOf(count.substring(count.length() - 2));
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-			maxCount = -1;
-		}
-		return maxCount;
-	}
 }

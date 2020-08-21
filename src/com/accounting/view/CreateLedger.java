@@ -20,7 +20,7 @@ import java.awt.event.ActionEvent;
 
 public class CreateLedger {
 
-	private User user;
+	private User user = LoginData.getUser();
 	private JFrame mainFrame;
 	private JTextField txt_Name;
 
@@ -38,8 +38,7 @@ public class CreateLedger {
 	/**
 	 * Create the application.
 	 */
-	public CreateLedger(User user) {
-		this.user = user;
+	public CreateLedger() {
 		initialize();
 	}
 
@@ -127,7 +126,7 @@ public class CreateLedger {
 				if (errMsg.equals("")) {
 					JOptionPane.showMessageDialog(mainFrame, LedgerModule.CREATE_SUCC_MSG, "¦¨¥\", 
 							JOptionPane.INFORMATION_MESSAGE);
-					new SelectLedger(user).show();
+					new SelectLedger().show();
 					mainFrame.dispose();
 				} else {
 					JOptionPane.showMessageDialog(mainFrame, errMsg, "¿ù»~", JOptionPane.ERROR_MESSAGE);
@@ -141,7 +140,7 @@ public class CreateLedger {
 		JButton btn_Return = new JButton("\u8FD4\u56DE");
 		btn_Return.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				new SelectLedger(user).show();
+				new SelectLedger().show();
 				mainFrame.dispose();
 			}
 		});

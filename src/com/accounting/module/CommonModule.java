@@ -9,8 +9,10 @@ public class CommonModule {
 	public static final String PHONE_ERROR_MSG = "手機格式錯誤!! 須為 10 位數字";
 	public static final String EMAIL_ERROR_MSG = "Email 格式錯誤!!";
 	public static final String QUIT_CONFIRM_MSG = "確定要離開帳務小管家嗎?";
+	public static final String SYSTEM_ERROR_MSG = "系統錯誤!!";
 	public static final String SUCC = "成功";
 	public static final String ERROR = "錯誤";
+	public static final String DELETE = "刪除";
 	public static final String QUIT = "離開";
 	
 	
@@ -84,7 +86,7 @@ public class CommonModule {
 	}
 	
 	public static boolean isEmail(String str) {
-		String regex = "^[a-zA-Z0-9_!#$%&'*+/=?`{|}~^-]+(?:\\\\.[a-zA-Z0-9_!#$%&'*+/=?`{|}~^-]+)*@[a-zA-Z0-9-]+(?:\\\\.[a-zA-Z0-9-]+)*$";
+		String regex = "^[a-zA-Z0-9_!#$%&'*+/=?`{|}~^-]+(?:\\.[a-zA-Z0-9_!#$%&'*+/=?`{|}~^-]+)*@[a-zA-Z0-9-]+(?:\\.[a-zA-Z0-9-]+)*$";
 		return Pattern.matches(regex, str);
 	}
 	

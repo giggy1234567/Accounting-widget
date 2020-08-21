@@ -153,7 +153,8 @@ public class Home {
 				if (errMsg.equals("")) {
 					JOptionPane.showMessageDialog(mainFrame, UserModule.LOGIN_SUCC_MSG, CommonModule.SUCC, 
 							JOptionPane.INFORMATION_MESSAGE);
-					new Index(user).show();
+					LoginData.setUser(user);
+					new Index().show();
 					mainFrame.dispose();
 				} else {
 					JOptionPane.showMessageDialog(mainFrame, errMsg, CommonModule.ERROR, JOptionPane.ERROR_MESSAGE);

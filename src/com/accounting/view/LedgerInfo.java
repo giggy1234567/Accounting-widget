@@ -33,10 +33,10 @@ import java.awt.event.ActionEvent;
 
 public class LedgerInfo {
 
-	private User user;
-	private Ledger ledger;
-	private ArrayList<Asset> asset_List;
-	private ArrayList<Expenditure> expend_List;
+	private User user = LoginData.getUser();
+	private Ledger ledger = LoginData.getLedger();
+	private ArrayList<Asset> asset_List = LoginData.getAsset_List();
+	private ArrayList<Expenditure> expend_List = LoginData.getExpend_List();
 	private ArrayList<Record> record_List;
 	private JFrame mainFrame;
 	private JTable tbl_Asset;
@@ -57,14 +57,8 @@ public class LedgerInfo {
 	/**
 	 * Create the application.
 	 */
-	public LedgerInfo(User user, Ledger ledger) {
-		this.user = user;
-		this.ledger = ledger;
-		AssetModule assetModule = new AssetModule();
-		ExpenditureModule expendModule = new ExpenditureModule();
+	public LedgerInfo() {
 		RecordModule recordModule = new RecordModule();
-		asset_List = assetModule.getAssets(ledger.getLedger_id());
-		expend_List = expendModule.getExpends(ledger.getLedger_id());
 		record_List = recordModule.getRecords(ledger.getLedger_id());
 		initialize();
 	}
@@ -108,6 +102,13 @@ public class LedgerInfo {
 		});
 		mainFrame.getContentPane().setLayout(null);
 		
+		if (ledger == null || expend_List == null || asset_List == null) {
+			JOptionPane.showMessageDialog(mainFrame, CommonModule.SYSTEM_ERROR_MSG, 
+					CommonModule.ERROR, JOptionPane.ERROR_MESSAGE);
+			new Index().show();
+			mainFrame.dispose();
+		}
+		
 		LedgerModule ledgerModule = new LedgerModule();
 		int month_total_amount = ledgerModule.monthStat(ledger.getLedger_id());
 		if (month_total_amount < 0) {
@@ -136,7 +137,10 @@ public class LedgerInfo {
 		JButton button_Return = new JButton("\u8FD4\u56DE\u5E33\u672C\u9078\u64C7");
 		button_Return.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				new SelectLedger(user).show();
+				LoginData.setLedger(null);
+				LoginData.setExpend_List(null);
+				LoginData.setAsset_List(null);
+				new SelectLedger().show();
 				mainFrame.dispose();
 			}
 		});
@@ -252,7 +256,7 @@ public class LedgerInfo {
 		JButton button_Add = new JButton("\u65B0\u589E\u5E33\u52D9\u7D00\u9304");
 		button_Add.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				new InsertRecord(user, ledger).show();
+				new InsertRecord().show();
 				mainFrame.dispose();
 			}
 		});
@@ -261,6 +265,12 @@ public class LedgerInfo {
 		panel.add(button_Add);
 		
 		JButton button_More = new JButton("\u67E5\u770B\u66F4\u591A\u5E33\u52D9\u7D00\u9304");
+		button_More.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				new QueryRecord().show();
+				mainFrame.dispose();
+			}
+		});
 		button_More.setFont(new Font("Microsoft JhengHei", Font.PLAIN, 20));
 		button_More.setBounds(1166, 466, 222, 41);
 		panel.add(button_More);

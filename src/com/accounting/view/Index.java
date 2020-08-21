@@ -24,8 +24,8 @@ import javax.swing.JPasswordField;
 
 public class Index {
 
+	private User user = LoginData.getUser();
 	private JFrame mainFrame;
-	private User user;
 	private JTextField txt_Account;
 	private JTextField txt_Name;
 	private JTextField txt_Phone;
@@ -47,8 +47,7 @@ public class Index {
 	/**
 	 * Create the application.
 	 */
-	public Index(User user) {
-		this.user = user;
+	public Index() {
 		initialize();
 	}
 	
@@ -93,6 +92,13 @@ public class Index {
 		});
 		mainFrame.getContentPane().setLayout(null);
 		
+		if (user == null) {
+			JOptionPane.showMessageDialog(mainFrame, CommonModule.SYSTEM_ERROR_MSG, 
+					CommonModule.ERROR, JOptionPane.ERROR_MESSAGE);
+			new Home().show();
+			mainFrame.dispose();
+		}
+		
 		UIManager.put("OptionPane.messageFont", new FontUIResource(new Font(  
 		          "Microsoft JhengHei", Font.BOLD, 18)));
 		UIManager.put("OptionPane.buttonFont", new FontUIResource(new Font(
@@ -106,6 +112,7 @@ public class Index {
 		JButton button_Backhome = new JButton("\u767B\u51FA");
 		button_Backhome.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				LoginData.setUser(null);
 				new Home().show();
 				mainFrame.dispose();
 			}
@@ -270,7 +277,8 @@ public class Index {
 				if (errMsg.equals("")) {
 					JOptionPane.showMessageDialog(mainFrame, UserModule.MODIFY_SUCC_MSG, CommonModule.SUCC, 
 							JOptionPane.INFORMATION_MESSAGE);
-					new Index(modifiedUser).show();
+					LoginData.setUser(modifiedUser);
+					new Index().show();
 					mainFrame.dispose();
 				} else {
 					JOptionPane.showMessageDialog(mainFrame, errMsg, 
@@ -285,7 +293,7 @@ public class Index {
 		JButton button_Ledger = new JButton("\u67E5\u770B\u5E33\u52D9");
 		button_Ledger.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				new SelectLedger(user).show();
+				new SelectLedger().show();
 				mainFrame.dispose();
 			}
 		});

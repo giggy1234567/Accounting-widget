@@ -15,7 +15,6 @@ import com.accounting.db.Asset;
 import com.accounting.db.Expenditure;
 import com.accounting.db.Ledger;
 import com.accounting.db.Record;
-import com.accounting.db.User;
 import com.accounting.module.AssetModule;
 import com.accounting.module.CommonModule;
 import com.accounting.module.ExpenditureModule;
@@ -32,10 +31,9 @@ import java.awt.Choice;
 
 public class InsertRecord {
 	
-	private User user;
-	private Ledger ledger;
-	private ArrayList<Asset> asset_List;
-	private ArrayList<Expenditure> expend_List;
+	private Ledger ledger = LoginData.getLedger();
+	private ArrayList<Asset> asset_List = LoginData.getAsset_List();
+	private ArrayList<Expenditure> expend_List = LoginData.getExpend_List();
 	private JFrame mainFrame;
 	private JTextField txt_Date;
 	private JTextField txt_Amount;
@@ -55,13 +53,7 @@ public class InsertRecord {
 	/**
 	 * Create the application.
 	 */
-	public InsertRecord(User user, Ledger ledger) {
-		this.user = user;
-		this.ledger = ledger;
-		AssetModule assetModule = new AssetModule();
-		ExpenditureModule expendModule = new ExpenditureModule();
-		asset_List = assetModule.getAssets(ledger.getLedger_id());
-		expend_List = expendModule.getExpends(ledger.getLedger_id());
+	public InsertRecord() {
 		initialize();
 	}
 
@@ -230,7 +222,7 @@ public class InsertRecord {
 				if (errMsg.equals("")) {
 					JOptionPane.showMessageDialog(mainFrame, RecordModule.INSERT_SUCC_MSG, CommonModule.SUCC, 
 							JOptionPane.INFORMATION_MESSAGE);
-					new InsertRecord(user, ledger).show();
+					new InsertRecord().show();
 					mainFrame.dispose();
 				} else {
 					JOptionPane.showMessageDialog(mainFrame, errMsg, 
@@ -246,7 +238,7 @@ public class InsertRecord {
 		btn_Return.setFont(new Font("Microsoft JhengHei UI", Font.BOLD, 24));
 		btn_Return.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				new LedgerInfo(user, ledger).show();
+				new LedgerInfo().show();
 				mainFrame.dispose();
 			}
 		});

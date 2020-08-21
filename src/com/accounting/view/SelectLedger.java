@@ -11,7 +11,9 @@ import java.awt.Font;
 
 import com.accounting.db.Ledger;
 import com.accounting.db.User;
+import com.accounting.module.AssetModule;
 import com.accounting.module.CommonModule;
+import com.accounting.module.ExpenditureModule;
 import com.accounting.module.LedgerModule;
 
 import java.util.ArrayList;
@@ -24,7 +26,7 @@ import java.awt.event.ActionEvent;
 
 public class SelectLedger {
 	
-	private User user;
+	private User user = LoginData.getUser();
 	private ArrayList<Ledger> ledger_List;
 	private JFrame mainFrame;
 
@@ -42,8 +44,7 @@ public class SelectLedger {
 	/**
 	 * Create the application.
 	 */
-	public SelectLedger(User user) {
-		this.user = user;
+	public SelectLedger() {
 		LedgerModule ledgerModule = new LedgerModule();
 		ledger_List = ledgerModule.getLedgers(user.getUser_id());
 		initialize();
@@ -126,7 +127,12 @@ public class SelectLedger {
 					break;
 				}
 				if (errMsg.equals("")) {
-					new LedgerInfo(user, ledger).show();
+					ExpenditureModule expendModule = new ExpenditureModule();
+					AssetModule assetModule = new AssetModule();
+					LoginData.setExpend_List(expendModule.getExpends(ledger.getLedger_id()));
+					LoginData.setAsset_List(assetModule.getAssets(ledger.getLedger_id()));
+					LoginData.setLedger(ledger);
+					new LedgerInfo().show();
 					mainFrame.dispose();
 				} else {
 					JOptionPane.showMessageDialog(mainFrame, errMsg, CommonModule.ERROR, JOptionPane.ERROR_MESSAGE);
@@ -140,7 +146,7 @@ public class SelectLedger {
 		JButton btn_Create = new JButton("\u65B0\u589E");
 		btn_Create.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				new CreateLedger(user).show();
+				new CreateLedger().show();
 				mainFrame.dispose();
 			}
 		});
@@ -151,7 +157,7 @@ public class SelectLedger {
 		JButton btn_Return = new JButton("\u8FD4\u56DE");
 		btn_Return.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				new Index(user).show();
+				new Index().show();
 				mainFrame.dispose();
 			}
 		});
