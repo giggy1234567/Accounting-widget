@@ -34,7 +34,44 @@ public class RecordDao {
 				record.setLedger_id(rset.getString(7));
 				record_List.add(record);
 			}
+			pstmt.closeOnCompletion();
 		} catch (SQLException e) {
+			e.printStackTrace();
+			record_List = null;
+		}
+		return record_List;
+	}
+	
+	public ArrayList<Record> queryRecord(String ledger_id, String date, String expend_name, String asset_name, String amount, String memo) {
+		ArrayList<Record> record_List = new ArrayList<Record>();
+		String sql = "select * from [record] where ledger_id = ? and record_date like ? "
+				+ "and expend_name like ? and asset_name like ? and amount like ? and memo like ?";
+		Record record;
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		try {
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, ledger_id);
+			pstmt.setString(2, date + "%");
+			pstmt.setString(3, "%" + expend_name + "%");
+			pstmt.setString(4, "%" + asset_name + "%");
+			pstmt.setString(5, amount.equals("") ? "%" : (amount + "%"));
+			pstmt.setString(6, "%" + memo + "%");
+			rset = pstmt.executeQuery();
+			while (rset.next()) {
+				record = new Record();
+				record.setRecord_id(rset.getString(1));
+				record.setRecord_date(rset.getString(2));
+				record.setExpend_name(rset.getString(3));
+				record.setAsset_name(rset.getString(4));
+				record.setAmount(rset.getString(5));
+				record.setMemo(rset.getString(6));
+				record.setLedger_id(rset.getString(7));
+				record_List.add(record);
+			}
+			pstmt.closeOnCompletion();
+		} catch (SQLException e) {
+			System.err.printf("Error Code [%d]\n", e.getErrorCode());
 			e.printStackTrace();
 			record_List = null;
 		}
@@ -98,7 +135,7 @@ public class RecordDao {
 	
 	public int modifyRecord(Record record) {
 		int rc = 0;
-		String sql = "update [record] set record_date = ?,  expend_id = ?, asset_id = ?, "
+		String sql = "update [record] set record_date = ?,  expend_name = ?, asset_name = ?, "
 				+ "amount = ?, memo = ? where record_id = ?";
 		PreparedStatement pstmt = null;
 		try {
@@ -126,6 +163,7 @@ public class RecordDao {
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, record_id);
 			pstmt.executeUpdate();
+			pstmt.closeOnCompletion();
 		} catch (SQLException e) {
 			System.err.printf("Error Code [%d]\n", e.getErrorCode());
 			e.printStackTrace();
@@ -142,6 +180,7 @@ public class RecordDao {
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, ledger_id);
 			pstmt.executeUpdate();
+			pstmt.closeOnCompletion();
 		} catch (SQLException e) {
 			System.err.printf("Error Code [%d]\n", e.getErrorCode());
 			e.printStackTrace();
@@ -166,6 +205,7 @@ public class RecordDao {
 				count = count.trim();
 				maxCount = Integer.valueOf(count.substring(count.length() - 2));
 			}
+			pstmt.closeOnCompletion();
 		} catch (SQLException e) {
 			e.printStackTrace();
 			maxCount = -1;
@@ -196,6 +236,7 @@ public class RecordDao {
 				}
 			}
 			pstmt.executeBatch();
+			pstmt.closeOnCompletion();
 		} catch (SQLException e) {
 			System.err.printf("Error Code [%d]\n", e.getErrorCode());
 			e.printStackTrace();
@@ -215,6 +256,7 @@ public class RecordDao {
 			pstmt.setString(2, date.substring(0, 7) + "%");
 			rset = pstmt.executeQuery();
 			while (rset.next()) amount = rset.getInt(1);
+			pstmt.closeOnCompletion();
 		} catch (SQLException e) {
 			System.err.printf("Error Code [%d]\n", e.getErrorCode());
 			e.printStackTrace();
@@ -236,6 +278,7 @@ public class RecordDao {
 			pstmt.setString(3, date.substring(0, 7) + "%");
 			rset = pstmt.executeQuery();
 			while (rset.next()) amount = rset.getInt(1);
+			pstmt.closeOnCompletion();
 		} catch (SQLException e) {
 			System.err.printf("Error Code [%d]\n", e.getErrorCode());
 			e.printStackTrace();
@@ -257,6 +300,7 @@ public class RecordDao {
 			pstmt.setString(3, date.substring(0, 7) + "%");
 			rset = pstmt.executeQuery();
 			while (rset.next()) amount = rset.getInt(1);
+			pstmt.closeOnCompletion();
 		} catch (SQLException e) {
 			System.err.printf("Error Code [%d]\n", e.getErrorCode());
 			e.printStackTrace();
@@ -279,6 +323,7 @@ public class RecordDao {
 					date_List.add(rset.getString(1).substring(0, 7));
 				}
 			}
+			pstmt.closeOnCompletion();
 		} catch (SQLException e) {
 			System.err.printf("Error Code [%d]\n", e.getErrorCode());
 			e.printStackTrace();
@@ -286,39 +331,5 @@ public class RecordDao {
 		}
 		return date_List;
 	}
-	
-	public ArrayList<Record> queryRecord(String ledger_id, String date, String expend_name, String asset_name, String amount, String memo) {
-		ArrayList<Record> record_List = new ArrayList<Record>();
-		String sql = "select * from [record] where ledger_id = ? and record_date like ? "
-				+ "and expend_name like ? and asset_name like ? and amount like ? and memo like ?";
-		Record record;
-		PreparedStatement pstmt = null;
-		ResultSet rset = null;
-		try {
-			pstmt = conn.prepareStatement(sql);
-			pstmt.setString(1, ledger_id);
-			pstmt.setString(2, date + "%");
-			pstmt.setString(3, "%" + expend_name + "%");
-			pstmt.setString(4, "%" + asset_name + "%");
-			pstmt.setString(5, amount.equals("") ? "%" : amount);
-			pstmt.setString(6, "%" + memo + "%");
-			rset = pstmt.executeQuery();
-			while (rset.next()) {
-				record = new Record();
-				record.setRecord_id(rset.getString(1));
-				record.setRecord_date(rset.getString(2));
-				record.setExpend_name(rset.getString(3));
-				record.setAsset_name(rset.getString(4));
-				record.setAmount(rset.getString(5));
-				record.setMemo(rset.getString(6));
-				record.setLedger_id(rset.getString(7));
-				record_List.add(record);
-			}
-		} catch (SQLException e) {
-			System.err.printf("Error Code [%d]\n", e.getErrorCode());
-			e.printStackTrace();
-			record_List = null;
-		}
-		return record_List;
-	}
+
 }

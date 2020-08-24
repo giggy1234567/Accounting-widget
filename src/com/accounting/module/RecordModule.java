@@ -16,10 +16,6 @@ public class RecordModule {
 	public static final String ENTER_EMPTY_MSG = "請輸入所有欄位資料 (備註紀錄可為空)";
 	public static final String EMPTY_RECORD_MSG = "無帳務紀錄";
 	public static final String DELETE_CONFIRM_MSG = "確定要刪除此筆帳務紀錄?";
-	public static final String INSERT_SUCC_MSG = "新增成功!!";
-	public static final String INSERT_FAIL_MSG = "新增失敗!!";
-	public static final String DELETE_SUCC_MSG = "刪除成功!!";
-	public static final String DELETE_FAIL_MSG = "刪除失敗!!";
 
 	public ArrayList<Record> getRecords(String ledger_id) {
 		ArrayList<Record> record_List = new ArrayList<Record>();
@@ -109,12 +105,21 @@ public class RecordModule {
 		return rc;
 	}
 	
-	public int remove(String record_id) {
+	public int remove(String record_id, String ledger_id) {
 		int rc = 0;
 		Connection conn = DBConnection.getConnection();
 		if (conn == null) rc = DB_CONNECT_FAIL_RC;
 		RecordDao recordDao = new RecordDao(conn);
 		rc = recordDao.deleteRecord(record_id);
+		if (rc != 0) {
+			try {
+				conn.rollback();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+			rc = DB_EXCEPTION_RC;
+		}
+		rc = recordDao.reorderRecordId(ledger_id);
 		if (rc != 0) {
 			try {
 				conn.rollback();

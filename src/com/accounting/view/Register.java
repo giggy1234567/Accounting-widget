@@ -242,21 +242,21 @@ public class Register {
 							txt_Phone.getText(), txt_Email.getText(), txt_Birthday.getText(), 
 							String.valueOf(passwd.getPassword())));
 					if (rc == UserModule.DB_CONNECT_FAIL_RC) {
-						errMsg = UserModule.REGISTER_FAIL_MSG + "\n" + UserModule.DB_CONNECT_FAIL_MSG;
+						errMsg = CommonModule.REGISTER_FAIL_MSG + "\n" + UserModule.DB_CONNECT_FAIL_MSG;
 						break;
 					}
 					if (rc == UserModule.DB_EXCEPTION_RC) {
-						errMsg = UserModule.REGISTER_FAIL_MSG + "\n" + UserModule.DB_EXCEPTION_MSG;
+						errMsg = CommonModule.REGISTER_FAIL_MSG + "\n" + UserModule.DB_EXCEPTION_MSG;
 						break;
 					} 
 					if (rc == UserModule.USER_ID_EXISTED_RC) {
-						errMsg = UserModule.REGISTER_FAIL_MSG + "\n" + UserModule.USER_ID_EXISTED_MSG;
+						errMsg = CommonModule.REGISTER_FAIL_MSG + "\n" + UserModule.USER_ID_EXISTED_MSG;
 						break;
 					}
 					break;
 				}
 				if (errMsg.equals("")) {
-					JOptionPane.showMessageDialog(mainFrame, UserModule.REGISTER_SUCC_MSG, 
+					JOptionPane.showMessageDialog(mainFrame, CommonModule.REGISTER_SUCC_MSG, 
 							CommonModule.SUCC, JOptionPane.INFORMATION_MESSAGE);
 					new Home().show();
 					mainFrame.dispose();
@@ -265,7 +265,7 @@ public class Register {
 				}
 			}
 		});
-		button_Confirm.setFont(new Font("Microsoft JhengHei", Font.PLAIN, 28));
+		button_Confirm.setFont(new Font("Microsoft JhengHei", Font.BOLD, 28));
 		button_Confirm.setBounds(137, 551, 170, 64);
 		panel.add(button_Confirm);
 		
@@ -276,7 +276,7 @@ public class Register {
 				mainFrame.dispose();
 			}
 		});
-		button_Backhome.setFont(new Font("Microsoft JhengHei", Font.PLAIN, 28));
+		button_Backhome.setFont(new Font("Microsoft JhengHei", Font.BOLD, 28));
 		button_Backhome.setBounds(367, 551, 170, 64);
 		panel.add(button_Backhome);
 	}

@@ -32,6 +32,7 @@ public class AssetDao {
 			pstmt.setString(2, ledger_id.trim());
 			pstmt.addBatch();
 			pstmt.executeBatch();
+			pstmt.closeOnCompletion();
 		} catch (SQLException e) {
 			System.err.printf("Error Code [%d]\n", e.getErrorCode());
 			e.printStackTrace();
@@ -49,6 +50,7 @@ public class AssetDao {
 			pstmt.setString(1, asset.getAsset_name());
 			pstmt.setString(2, asset.getLedger_id());
 			pstmt.executeUpdate();
+			pstmt.closeOnCompletion();
 		} catch (SQLException e) {
 			System.err.printf("Error Code [%d]\n", e.getErrorCode());
 			e.printStackTrace();
@@ -73,6 +75,7 @@ public class AssetDao {
 				asset.setLedger_id(rset.getString(2));
 				asset_List.add(asset);
 			}
+			pstmt.closeOnCompletion();
 		} catch (SQLException e) {
 			e.printStackTrace();
 			asset_List = null;
@@ -90,6 +93,7 @@ public class AssetDao {
 			pstmt.setString(2, asset.getLedger_id());
 			pstmt.setString(3, oldName);
 			pstmt.executeUpdate();
+			pstmt.closeOnCompletion();
 		} catch (SQLException e) {
 			System.err.printf("Error Code [%d]\n", e.getErrorCode());
 			e.printStackTrace();
@@ -107,6 +111,7 @@ public class AssetDao {
 			pstmt.setString(1, asset.getAsset_name());
 			pstmt.setString(2, asset.getLedger_id());
 			pstmt.executeQuery();
+			pstmt.closeOnCompletion();
 		} catch (SQLException e) {
 			System.err.printf("Error Code [%d]\n", e.getErrorCode());
 			e.printStackTrace();
@@ -123,6 +128,7 @@ public class AssetDao {
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, ledger_id);
 			pstmt.executeQuery();
+			pstmt.closeOnCompletion();
 		} catch (SQLException e) {
 			e.printStackTrace();
 			rc = -1;
@@ -153,6 +159,7 @@ public class AssetDao {
 				}
 			}
 			pstmt.executeBatch();
+			pstmt.closeOnCompletion();
 		} catch (SQLException e) {
 			System.err.printf("Error Code [%d]\n", e.getErrorCode());
 			e.printStackTrace();

@@ -21,11 +21,6 @@ public class LedgerModule {
 	public static final String LEDGER_NAME_EXISTED_MSG = "該帳本名稱已存在\n請重新輸入";
 	public static final String SELECT_EMPTY_MSG = "請選擇帳本";
 	public static final String ENTER_EMPTY_MSG = "請輸入帳本名稱";
-	public static final String CREATE_SUCC_MSG = "新增成功!!";
-	public static final String CREATE_FAIL_MSG = "新增失敗!!";
-	public static final String MODIFY_SUCC_MSG = "修改成功!!";
-	public static final String MODIFY_FAIL_MSG = "修改失敗!!";
-	public static final String REMOVE_FAIL_MSG = "刪除失敗!!";
 	
 	public ArrayList<Ledger> getLedgers(String user_id) {
 		ArrayList<Ledger> ledger_List = new ArrayList<Ledger>();

@@ -139,7 +139,7 @@ public class SelectLedger {
 				}
 			}
 		});
-		btn_Confirm.setFont(new Font("Microsoft JhengHei", Font.PLAIN, 20));
+		btn_Confirm.setFont(new Font("Microsoft JhengHei", Font.BOLD, 20));
 		btn_Confirm.setBounds(65, 180, 75, 40);
 		panel.add(btn_Confirm);
 		
@@ -150,7 +150,7 @@ public class SelectLedger {
 				mainFrame.dispose();
 			}
 		});
-		btn_Create.setFont(new Font("Microsoft JhengHei", Font.PLAIN, 20));
+		btn_Create.setFont(new Font("Microsoft JhengHei", Font.BOLD, 20));
 		btn_Create.setBounds(160, 180, 75, 40);
 		panel.add(btn_Create);
 		
@@ -161,7 +161,7 @@ public class SelectLedger {
 				mainFrame.dispose();
 			}
 		});
-		btn_Return.setFont(new Font("Microsoft JhengHei", Font.PLAIN, 20));
+		btn_Return.setFont(new Font("Microsoft JhengHei", Font.BOLD, 20));
 		btn_Return.setBounds(257, 180, 75, 40);
 		panel.add(btn_Return);
 	}

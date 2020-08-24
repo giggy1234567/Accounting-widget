@@ -27,6 +27,10 @@ import javax.swing.JTable;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.awt.event.ActionEvent;
 import javax.swing.JComboBox;
 import java.awt.Color;
@@ -37,8 +41,11 @@ public class QueryRecord {
 	private ArrayList<Expenditure> expend_List = LoginData.getExpend_List();
 	private ArrayList<Asset> asset_List = LoginData.getAsset_List();
 	private ArrayList<Record> record_List;
-	private Object record_tbl_data[][] = new Object[200][];
+	private final int MAX_ROW = 500;
+	private Object record_tbl_data[][] = new Object[MAX_ROW][];
 	private ItemListener itemListener;
+	private KeyListener keyListener;
+	private MouseListener mouseListener;
 	private JFrame mainFrame;
 	private JTextField txt_Amount;
 	private JTextField txt_Memo;
@@ -69,7 +76,7 @@ public class QueryRecord {
 		mainFrame = new JFrame();
 		mainFrame.setTitle("\u5E33\u52D9\u5C0F\u7BA1\u5BB6 - \u5E33\u52D9\u67E5\u8A62");
 		mainFrame.setIconImage(Toolkit.getDefaultToolkit().getImage("D:\\Workspace\\Accounting\\ledger.png"));
-		mainFrame.setBounds(100, 100, 1550, 910);
+		mainFrame.setBounds(100, 100, 1456, 910);
 		mainFrame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		mainFrame.addWindowListener(new WindowListener() {
 			public void windowOpened(WindowEvent e) {
@@ -103,7 +110,7 @@ public class QueryRecord {
 		RecordModule recordModule = new RecordModule();
 		
 		JPanel panel = new JPanel();
-		panel.setBounds(0, 0, 1528, 854);
+		panel.setBounds(0, 0, 1434, 854);
 		mainFrame.getContentPane().add(panel);
 		panel.setLayout(null);
 		
@@ -184,13 +191,13 @@ public class QueryRecord {
 				mainFrame.dispose();
 			}
 		});
-		btn_Return.setFont(new Font("Microsoft JhengHei", Font.BOLD, 18));
-		btn_Return.setBounds(1393, 50, 80, 34);
+		btn_Return.setFont(new Font("Microsoft JhengHei", Font.BOLD, 20));
+		btn_Return.setBounds(1291, 124, 80, 39);
 		panel.add(btn_Return);
 		
 		JLabel lbl_Record = new JLabel("\u5E33\u52D9\u7D00\u9304");
 		lbl_Record.setFont(new Font("Microsoft JhengHei", Font.BOLD, 28));
-		lbl_Record.setBounds(54, 125, 136, 33);
+		lbl_Record.setBounds(54, 125, 125, 33);
 		panel.add(lbl_Record);
 		
 		record_List = recordModule.getRecords(ledger.getLedger_id(), (String) comBox_Date.getSelectedItem(), 
@@ -212,9 +219,13 @@ public class QueryRecord {
 		for (int i = 0; i < record_List.size(); i++) {
 			Record rec = record_List.get(i);
 			record_tbl_data[i] = new Object[] {
-					rec.getRecord_date(), rec.getExpend_name(), rec.getAsset_name(), rec.getAmount(), rec.getMemo()
-					};
-			if (i == 200) break;
+					rec.getRecord_date(), 
+					rec.getExpend_name().trim(), 
+					rec.getAsset_name().trim(), 
+					rec.getAmount().trim(), 
+					rec.getMemo().trim()
+			};
+			if (i == MAX_ROW) break;
 		}
 		
 		tbl_Record = new JTable();
@@ -232,22 +243,36 @@ public class QueryRecord {
 		tbl_Record.setBounds(71, 571, 834, 612);
 		panel.add(scrollPane);
 		
+		JLabel lbl_Record_1 = new JLabel("(\u6700\u591A\u986F\u793A500\u7B46\u8CC7\u6599\uFF0C\u96D9\u64CA\u4EE5\u4FEE\u6539\u5E33\u52D9\u8CC7\u6599)");
+		lbl_Record_1.setFont(new Font("Microsoft JhengHei", Font.BOLD, 28));
+		lbl_Record_1.setBounds(279, 125, 565, 33);
+		panel.add(lbl_Record_1);
+		
+		JButton btn_Return_1 = new JButton("\u532F\u51FA\u5831\u8868");
+		btn_Return_1.setFont(new Font("Microsoft JhengHei", Font.BOLD, 20));
+		btn_Return_1.setBounds(1068, 124, 115, 39);
+		panel.add(btn_Return_1);
+		
 		itemListener = new ItemListener() {
 			public void itemStateChanged(ItemEvent e) {
 				if (e.getStateChange() == ItemEvent.SELECTED) {
 					record_List = recordModule.getRecords(ledger.getLedger_id(), (String) comBox_Date.getSelectedItem(), 
 							(String) comBox_Expend.getSelectedItem(), (String) comBox_Asset.getSelectedItem(), 
 							txt_Amount.getText(), txt_Memo.getText());
-					record_tbl_data = new Object[200][];
+					record_tbl_data = new Object[MAX_ROW][];
 					if (record_List.size() == 0) {
 						record_tbl_data[0] = new Object[] {"", "", RecordModule.EMPTY_RECORD_MSG, "", ""};
 					}
 					for (int i = 0; i < record_List.size(); i++) {
 						Record rec = record_List.get(i);
 						record_tbl_data[i] = new Object[] {
-								rec.getRecord_date(), rec.getExpend_name(), rec.getAsset_name(), rec.getAmount(), rec.getMemo()
-								};
-						if (i == 200) break;
+								rec.getRecord_date(), 
+								rec.getExpend_name().trim(), 
+								rec.getAsset_name().trim(), 
+								rec.getAmount().trim(),
+								rec.getMemo().trim()
+						};
+						if (i == MAX_ROW) break;
 					}
 					tbl_Record.setModel(new DefaultTableModel(record_tbl_data, record_tbl_title) {
 						private static final long serialVersionUID = 1L;
@@ -258,8 +283,56 @@ public class QueryRecord {
 				}
 			}
 		};
+		keyListener = new KeyListener() {
+			public void keyTyped(KeyEvent e) {
+			}
+
+			public void keyPressed(KeyEvent e) {
+			}
+			public void keyReleased(KeyEvent e) {
+				record_List = recordModule.getRecords(ledger.getLedger_id(), (String) comBox_Date.getSelectedItem(), 
+						(String) comBox_Expend.getSelectedItem(), (String) comBox_Asset.getSelectedItem(), 
+						txt_Amount.getText(), txt_Memo.getText());
+				record_tbl_data = new Object[MAX_ROW][];
+				if (record_List.size() == 0) {
+					record_tbl_data[0] = new Object[] {"", "", RecordModule.EMPTY_RECORD_MSG, "", ""};
+				}
+				for (int i = 0; i < record_List.size(); i++) {
+					Record rec = record_List.get(i);
+					record_tbl_data[i] = new Object[] {
+							rec.getRecord_date(), 
+							rec.getExpend_name().trim(), 
+							rec.getAsset_name().trim(), 
+							rec.getAmount().trim(), 
+							rec.getMemo().trim()
+					};
+					if (i == MAX_ROW) break;
+				}
+				tbl_Record.setModel(new DefaultTableModel(record_tbl_data, record_tbl_title) {
+					private static final long serialVersionUID = 1L;
+					public boolean isCellEditable(int row, int column) {
+						return false;
+					}
+				});
+			}
+		};
+		mouseListener = new MouseListener() {
+			public void mouseClicked(MouseEvent e) {
+				if (e.getClickCount() == 2 && !e.isConsumed()) {
+					new ModifyRecord(record_List.get(tbl_Record.getSelectedRow())).show();
+					mainFrame.dispose();
+				}
+			}
+			public void mousePressed(MouseEvent e) {}
+			public void mouseReleased(MouseEvent e) {}
+			public void mouseEntered(MouseEvent e) {}
+			public void mouseExited(MouseEvent e) {}
+		};
 		comBox_Date.addItemListener(itemListener);
 		comBox_Asset.addItemListener(itemListener);
 		comBox_Expend.addItemListener(itemListener);
+		tbl_Record.addMouseListener(mouseListener);
+		txt_Amount.addKeyListener(keyListener);
+		txt_Memo.addKeyListener(keyListener);
 	}
 }

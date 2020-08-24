@@ -20,10 +20,6 @@ public class UserModule {
 	public static final String LOGIN_SUCC_MSG = "登入成功!!";
 	public static final String LOGIN_EMPTY_MSG = "請輸入帳號及密碼";
 	public static final String REGISTER_EMPTY_MSG = "請填入所有欄位資料";
-	public static final String MODIFY_SUCC_MSG = "修改成功!!";
-	public static final String MODIFY_FAIL_MSG = "修改失敗!!";
-	public static final String REGISTER_SUCC_MSG = "註冊成功!!";
-	public static final String REGISTER_FAIL_MSG = "註冊失敗!!";
 	
 	public int login(String user_id, String password) {
 		int rc = 0;

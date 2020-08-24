@@ -144,7 +144,7 @@ public class LedgerInfo {
 				mainFrame.dispose();
 			}
 		});
-		button_Return.setFont(new Font("Microsoft JhengHei", Font.PLAIN, 20));
+		button_Return.setFont(new Font("Microsoft JhengHei", Font.BOLD, 20));
 		button_Return.setBounds(1226, 42, 162, 41);
 		panel.add(button_Return);
 		
@@ -202,12 +202,24 @@ public class LedgerInfo {
 		panel.add(scrollPane_Asset);
 		
 		JButton button_Asset = new JButton("\u8CC7\u7522\u7BA1\u7406");
-		button_Asset.setFont(new Font("Microsoft JhengHei", Font.PLAIN, 24));
+		button_Asset.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				new ManageAsset();
+				mainFrame.dispose();
+			}
+		});
+		button_Asset.setFont(new Font("Microsoft JhengHei", Font.BOLD, 24));
 		button_Asset.setBounds(531, 192, 140, 48);
 		panel.add(button_Asset);
 		
 		JButton button_Expend = new JButton("\u652F\u51FA\u7BA1\u7406");
-		button_Expend.setFont(new Font("Microsoft JhengHei", Font.PLAIN, 24));
+		button_Expend.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				new ManageExpend();
+				mainFrame.dispose();
+			}
+		});
+		button_Expend.setFont(new Font("Microsoft JhengHei", Font.BOLD, 24));
 		button_Expend.setBounds(1248, 192, 140, 48);
 		panel.add(button_Expend);
 		
@@ -260,7 +272,7 @@ public class LedgerInfo {
 				mainFrame.dispose();
 			}
 		});
-		button_Add.setFont(new Font("Microsoft JhengHei", Font.PLAIN, 20));
+		button_Add.setFont(new Font("Microsoft JhengHei", Font.BOLD, 20));
 		button_Add.setBounds(636, 467, 222, 41);
 		panel.add(button_Add);
 		
@@ -271,7 +283,7 @@ public class LedgerInfo {
 				mainFrame.dispose();
 			}
 		});
-		button_More.setFont(new Font("Microsoft JhengHei", Font.PLAIN, 20));
+		button_More.setFont(new Font("Microsoft JhengHei", Font.BOLD, 20));
 		button_More.setBounds(1166, 466, 222, 41);
 		panel.add(button_More);
 		
@@ -285,8 +297,12 @@ public class LedgerInfo {
 		for (int i = 0; i < record_List.size(); i++) {
 			Record rec = record_List.get(i);
 			record_tbl_data[i] = new Object[] {
-					rec.getRecord_date(), rec.getExpend_name(), rec.getAsset_name(), rec.getAmount(), rec.getMemo()
-					};
+					rec.getRecord_date(), 
+					rec.getExpend_name().trim(), 
+					rec.getAsset_name().trim(),
+					rec.getAmount().trim(),
+					rec.getMemo().trim()
+			};
 			if (i == 10) break;
 		}
 		tbl_Record = new JTable();

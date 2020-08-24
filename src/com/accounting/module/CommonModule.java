@@ -10,6 +10,14 @@ public class CommonModule {
 	public static final String EMAIL_ERROR_MSG = "Email 格式錯誤!!";
 	public static final String QUIT_CONFIRM_MSG = "確定要離開帳務小管家嗎?";
 	public static final String SYSTEM_ERROR_MSG = "系統錯誤!!";
+	public static final String REGISTER_SUCC_MSG = "註冊成功!!";
+	public static final String REGISTER_FAIL_MSG = "註冊失敗!!";
+	public static final String INSERT_SUCC_MSG = "新增成功!!";
+	public static final String INSERT_FAIL_MSG = "新增失敗!!";
+	public static final String MODIFY_SUCC_MSG = "修改成功!!";
+	public static final String MODIFY_FAIL_MSG = "修改失敗!!";
+	public static final String DELETE_SUCC_MSG = "刪除成功!!";
+	public static final String DELETE_FAIL_MSG = "刪除失敗!!";
 	public static final String SUCC = "成功";
 	public static final String ERROR = "錯誤";
 	public static final String DELETE = "刪除";

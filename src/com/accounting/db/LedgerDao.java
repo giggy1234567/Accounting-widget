@@ -30,6 +30,7 @@ public class LedgerDao {
 				ledger.setUser_id(rset.getString(3));
 				ledger_List.add(ledger);
 			}
+			pstmt.closeOnCompletion();
 		} catch (SQLException e) {
 			e.printStackTrace();
 			ledger_List = null;
@@ -56,6 +57,7 @@ public class LedgerDao {
 			pstmt.setString(2, ledger.getLedger_name());
 			pstmt.setString(3, ledger.getUser_id());
 			pstmt.executeUpdate();
+			pstmt.closeOnCompletion();
 		} catch (SQLException e) {
 			System.err.printf("Error Code [%d]\n", e.getErrorCode());
 			e.printStackTrace();
@@ -73,6 +75,7 @@ public class LedgerDao {
 			pstmt.setString(1, ledger.getLedger_name());
 			pstmt.setString(2, ledger.getLedger_id());
 			pstmt.executeUpdate();
+			pstmt.closeOnCompletion();
 		} catch (SQLException e) {
 			e.printStackTrace();
 			rc = -1;
@@ -88,6 +91,7 @@ public class LedgerDao {
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, ledger_id);
 			pstmt.executeUpdate();
+			pstmt.closeOnCompletion();
 		} catch (SQLException e) {
 			e.printStackTrace();
 			rc = -1;
@@ -111,6 +115,7 @@ public class LedgerDao {
 				ledger.setLedger_name(rset.getString(2));
 				ledger.setUser_id(rset.getString(3));
 			}
+			pstmt.closeOnCompletion();
 		} catch (SQLException e) {
 			e.printStackTrace();
 			ledger = null;
@@ -141,6 +146,7 @@ public class LedgerDao {
 				}
 			}
 			pstmt.executeBatch();
+			pstmt.closeOnCompletion();
 		} catch (SQLException e) {
 			System.err.printf("Error Code [%d]\n", e.getErrorCode());
 			e.printStackTrace();
@@ -167,6 +173,7 @@ public class LedgerDao {
 				count = count.trim();
 				maxCount = Integer.valueOf(count.substring(count.length() - 2));
 			}
+			pstmt.closeOnCompletion();
 		} catch (SQLException e) {
 			e.printStackTrace();
 			maxCount = -1;

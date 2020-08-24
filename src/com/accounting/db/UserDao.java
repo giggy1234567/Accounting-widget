@@ -5,8 +5,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import com.microsoft.sqlserver.jdbc.SQLServerException;
-
 
 public class UserDao {
 	Connection conn;
@@ -28,6 +26,7 @@ public class UserDao {
 			pstmt.setString(5, user.getBirthday());
 			pstmt.setString(6, user.getPassword());
 			pstmt.executeUpdate();
+			pstmt.closeOnCompletion();
 		} catch (SQLException e) {
 			System.err.printf("Error Code [%d]\n", e.getErrorCode());
 			e.printStackTrace();
@@ -54,8 +53,9 @@ public class UserDao {
 				user.setBirthday(rset.getString(5));
 				user.setPassword(rset.getString(6));
 			}
+			pstmt.closeOnCompletion();
 		} catch (SQLException e) {
-			System.err.printf("Error Code [%s]\n", e.getSQLState());
+			System.err.printf("Error Code [%d]\n", e.getErrorCode());
 			e.printStackTrace();
 			user = null;
 		}
@@ -76,6 +76,7 @@ public class UserDao {
 			pstmt.setString(5, user.getPassword());
 			pstmt.setString(6, user.getUser_id());
 			pstmt.executeUpdate();
+			pstmt.closeOnCompletion();
 		} catch (SQLException e) {
 			System.err.printf("Error Code [%d]\n", e.getErrorCode());
 			e.printStackTrace();
@@ -94,11 +95,9 @@ public class UserDao {
 			pstmt.setString(1, user_id);
 			rset = pstmt.executeQuery();
 			while (rset.next()) pwd = rset.getString(1);
-		} catch(SQLServerException e) {
-			System.err.printf("Error Code [%d]", e.getSQLServerError().getErrorNumber());
-			e.printStackTrace();
-			pwd = null;
+			pstmt.closeOnCompletion();
 		} catch (SQLException e) {
+			System.err.printf("Error Code [%d]\n", e.getErrorCode());
 			e.printStackTrace();
 			pwd = null;
 		}

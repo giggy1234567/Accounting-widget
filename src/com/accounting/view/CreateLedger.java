@@ -3,6 +3,7 @@ package com.accounting.view;
 import javax.swing.JFrame;
 
 import com.accounting.db.User;
+import com.accounting.module.CommonModule;
 import com.accounting.module.LedgerModule;
 
 import java.awt.Toolkit;
@@ -110,21 +111,21 @@ public class CreateLedger {
 					}
 					rc = ledgerModule.create(txt_Name.getText(), user.getUser_id());
 					if (rc == LedgerModule.DB_CONNECT_FAIL_RC) {
-						errMsg = LedgerModule.CREATE_FAIL_MSG + "\n" + LedgerModule.DB_CONNECT_FAIL_MSG;
+						errMsg = CommonModule.INSERT_FAIL_MSG + "\n" + LedgerModule.DB_CONNECT_FAIL_MSG;
 						break;
 					}
 					if (rc == LedgerModule.DB_EXCEPTION_RC) {
-						errMsg = LedgerModule.CREATE_FAIL_MSG + "\n" + LedgerModule.DB_EXCEPTION_MSG;
+						errMsg = CommonModule.INSERT_FAIL_MSG + "\n" + LedgerModule.DB_EXCEPTION_MSG;
 						break;
 					}
 					if (rc == LedgerModule.LEDGER_NAME_EXISTED_RC) {
-						errMsg = LedgerModule.CREATE_FAIL_MSG + "\n" + LedgerModule.LEDGER_NAME_EXISTED_MSG;
+						errMsg = CommonModule.INSERT_FAIL_MSG + "\n" + LedgerModule.LEDGER_NAME_EXISTED_MSG;
 						break;
 					}
 					break;
 				}
 				if (errMsg.equals("")) {
-					JOptionPane.showMessageDialog(mainFrame, LedgerModule.CREATE_SUCC_MSG, "成功", 
+					JOptionPane.showMessageDialog(mainFrame, CommonModule.INSERT_SUCC_MSG, "成功", 
 							JOptionPane.INFORMATION_MESSAGE);
 					new SelectLedger().show();
 					mainFrame.dispose();

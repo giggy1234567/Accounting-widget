@@ -210,17 +210,17 @@ public class InsertRecord {
 							choice_Asset.getSelectedItem(), txt_Amount.getText(), txt_Memo.getText(), 
 							ledger.getLedger_id()));
 					if (rc == RecordModule.DB_CONNECT_FAIL_RC) {
-						errMsg = RecordModule.INSERT_FAIL_MSG + "\n" + RecordModule.DB_CONNECT_FAIL_MSG;
+						errMsg = CommonModule.INSERT_FAIL_MSG + "\n" + RecordModule.DB_CONNECT_FAIL_MSG;
 						break;
 					}
 					if (rc == RecordModule.DB_EXCEPTION_RC) {
-						errMsg = RecordModule.INSERT_FAIL_MSG + "\n" + RecordModule.DB_EXCEPTION_MSG;
+						errMsg = CommonModule.INSERT_FAIL_MSG + "\n" + RecordModule.DB_EXCEPTION_MSG;
 						break;
 					}
 					break;
 				}
 				if (errMsg.equals("")) {
-					JOptionPane.showMessageDialog(mainFrame, RecordModule.INSERT_SUCC_MSG, CommonModule.SUCC, 
+					JOptionPane.showMessageDialog(mainFrame, CommonModule.INSERT_SUCC_MSG, CommonModule.SUCC, 
 							JOptionPane.INFORMATION_MESSAGE);
 					new InsertRecord().show();
 					mainFrame.dispose();

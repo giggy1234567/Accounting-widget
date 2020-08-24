@@ -13,8 +13,6 @@ import javax.swing.JOptionPane;
 
 import java.awt.Font;
 import javax.swing.JTextField;
-import javax.swing.UIManager;
-import javax.swing.plaf.FontUIResource;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
@@ -99,11 +97,6 @@ public class Index {
 			mainFrame.dispose();
 		}
 		
-		UIManager.put("OptionPane.messageFont", new FontUIResource(new Font(  
-		          "Microsoft JhengHei", Font.BOLD, 18)));
-		UIManager.put("OptionPane.buttonFont", new FontUIResource(new Font(
-				"Microsoft JhengHei",Font.PLAIN,18)));
-		
 		JPanel panel = new JPanel();
 		panel.setLayout(null);
 		panel.setBounds(0, 0, 604, 692);
@@ -117,7 +110,7 @@ public class Index {
 				mainFrame.dispose();
 			}
 		});
-		button_Backhome.setFont(new Font("Microsoft JhengHei", Font.PLAIN, 24));
+		button_Backhome.setFont(new Font("Microsoft JhengHei", Font.BOLD, 24));
 		button_Backhome.setBounds(461, 46, 110, 49);
 		panel.add(button_Backhome);
 		
@@ -264,18 +257,18 @@ public class Index {
 					
 					rc = userModule.modify(modifiedUser);
 					if (rc == UserModule.DB_CONNECT_FAIL_RC) {
-						errMsg = UserModule.MODIFY_FAIL_MSG + "\n" + UserModule.DB_CONNECT_FAIL_MSG;
+						errMsg = CommonModule.MODIFY_FAIL_MSG + "\n" + UserModule.DB_CONNECT_FAIL_MSG;
 						break;
 					}
 					else if (rc == UserModule.DB_EXCEPTION_RC) {
-						errMsg = UserModule.MODIFY_FAIL_MSG + "\n" + UserModule.DB_EXCEPTION_MSG;
+						errMsg = CommonModule.MODIFY_FAIL_MSG + "\n" + UserModule.DB_EXCEPTION_MSG;
 						break;
 					}
 					break;
 				}
 				
 				if (errMsg.equals("")) {
-					JOptionPane.showMessageDialog(mainFrame, UserModule.MODIFY_SUCC_MSG, CommonModule.SUCC, 
+					JOptionPane.showMessageDialog(mainFrame, CommonModule.MODIFY_SUCC_MSG, CommonModule.SUCC, 
 							JOptionPane.INFORMATION_MESSAGE);
 					LoginData.setUser(modifiedUser);
 					new Index().show();
@@ -286,7 +279,7 @@ public class Index {
 				}
 			}
 		});
-		button_Modify.setFont(new Font("Microsoft JhengHei", Font.PLAIN, 28));
+		button_Modify.setFont(new Font("Microsoft JhengHei", Font.BOLD, 28));
 		button_Modify.setBounds(95, 576, 170, 64);
 		panel.add(button_Modify);
 		
@@ -297,7 +290,7 @@ public class Index {
 				mainFrame.dispose();
 			}
 		});
-		button_Ledger.setFont(new Font("Microsoft JhengHei", Font.PLAIN, 28));
+		button_Ledger.setFont(new Font("Microsoft JhengHei", Font.BOLD, 28));
 		button_Ledger.setBounds(350, 576, 170, 64);
 		panel.add(button_Ledger);
 		

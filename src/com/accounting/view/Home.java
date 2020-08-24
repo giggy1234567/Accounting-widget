@@ -15,6 +15,7 @@ import java.awt.event.ActionEvent;
 import javax.swing.JTextField;
 import javax.swing.UIManager;
 import javax.swing.plaf.FontUIResource;
+import javax.swing.plaf.basic.BasicButtonUI;
 
 import com.accounting.db.User;
 import com.accounting.module.CommonModule;
@@ -98,7 +99,7 @@ public class Home {
 		          "Microsoft JhengHei", Font.BOLD, 18)));
 		UIManager.put("OptionPane.buttonFont", new FontUIResource(new Font(
 				"Microsoft JhengHei",Font.PLAIN,18)));
-		
+		UIManager.put("ButtonUI", BasicButtonUI.class.getName());
 		
 		JPanel panel = new JPanel();
 		panel.setBounds(0, 0, 556, 536);
@@ -161,12 +162,12 @@ public class Home {
 				}
 			}
 		});
-		button_Login.setFont(new Font("Microsoft JhengHei", Font.PLAIN, 24));
+		button_Login.setFont(new Font("Microsoft JhengHei", Font.BOLD, 24));
 		button_Login.setBounds(90, 420, 140, 64);
 		panel.add(button_Login);
 		
 		JButton button_Register = new JButton("\u8A3B\u518A");
-		button_Register.setFont(new Font("Microsoft JhengHei", Font.PLAIN, 24));
+		button_Register.setFont(new Font("Microsoft JhengHei", Font.BOLD, 24));
 		button_Register.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				new Register().show();

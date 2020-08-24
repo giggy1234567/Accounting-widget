@@ -18,9 +18,6 @@ public class AssetModule {
 	public static final int ASSET_NAME_EXISTED_RC = 3;
 	public static final String ASSET_NAME_EXISTED_MSG = "該資產項目已存在\n請重新輸入";
 	public static final String SELECT_EMPTY_MSG = "請選擇資產項目";
-	public static final String CREATE_FAIL_MSG = "新增失敗!!";
-	public static final String MODIFY_FAIL_MSG = "修改失敗!!";
-	public static final String REMOVE_FAIL_MSG = "刪除失敗!!";
 	
 	public int createDefault(String ledger_id) {
 		int rc = 0;

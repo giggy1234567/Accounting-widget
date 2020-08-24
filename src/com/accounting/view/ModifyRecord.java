@@ -14,9 +14,7 @@ import javax.swing.plaf.FontUIResource;
 import com.accounting.db.Asset;
 import com.accounting.db.Expenditure;
 import com.accounting.db.Record;
-import com.accounting.module.AssetModule;
 import com.accounting.module.CommonModule;
-import com.accounting.module.ExpenditureModule;
 import com.accounting.module.RecordModule;
 
 import javax.swing.JButton;
@@ -130,8 +128,8 @@ public class ModifyRecord {
 		Choice choice_Expend = new Choice();
 		choice_Expend.setFont(new Font("Microsoft JhengHei", Font.PLAIN, 24));
 		choice_Expend.setBounds(199, 173, 253, 39);
-		choice_Expend.add(ExpenditureModule.SELECT_EMPTY_MSG);
 		for (Expenditure e : expend_List) choice_Expend.add(e.getExpend_name());
+		choice_Expend.select(record.getExpend_name());
 		panel.add(choice_Expend);
 		
 		JLabel lbl_Asset = new JLabel("\u8CC7\u7522\u9805\u76EE:");
@@ -142,8 +140,8 @@ public class ModifyRecord {
 		Choice choice_Asset = new Choice();
 		choice_Asset.setFont(new Font("Microsoft JhengHei", Font.PLAIN, 24));
 		choice_Asset.setBounds(199, 229, 253, 39);
-		choice_Asset.add(AssetModule.SELECT_EMPTY_MSG);
 		for (Asset e : asset_List) choice_Asset.add(e.getAsset_name());
+		choice_Asset.select(record.getAsset_name());
 		panel.add(choice_Asset);
 		
 		JLabel lbl_Amount = new JLabel("\u82B1\u8CBB\u91D1\u984D:");
@@ -185,14 +183,6 @@ public class ModifyRecord {
 						errMsg = RecordModule.ENTER_EMPTY_MSG;
 						break;
 					}
-					if (choice_Expend.getSelectedItem().equals(ExpenditureModule.SELECT_EMPTY_MSG)) {
-						errMsg = ExpenditureModule.SELECT_EMPTY_MSG;
-						break;
-					}
-					if (choice_Asset.getSelectedItem().equals(AssetModule.SELECT_EMPTY_MSG)) {
-						errMsg = AssetModule.SELECT_EMPTY_MSG;
-						break;
-					}
 					
 					// 欄位輸入格式檢核
 					if (!CommonModule.isDate(txt_Date.getText())) {
@@ -208,19 +198,19 @@ public class ModifyRecord {
 							choice_Expend.getSelectedItem(), choice_Asset.getSelectedItem(), txt_Amount.getText(), 
 							txt_Memo.getText(), record.getLedger_id()));
 					if (rc == RecordModule.DB_CONNECT_FAIL_RC) {
-						errMsg = RecordModule.INSERT_FAIL_MSG + "\n" + RecordModule.DB_CONNECT_FAIL_MSG;
+						errMsg = CommonModule.INSERT_FAIL_MSG + "\n" + RecordModule.DB_CONNECT_FAIL_MSG;
 						break;
 					}
 					if (rc == RecordModule.DB_EXCEPTION_RC) {
-						errMsg = RecordModule.INSERT_FAIL_MSG + "\n" + RecordModule.DB_EXCEPTION_MSG;
+						errMsg = CommonModule.INSERT_FAIL_MSG + "\n" + RecordModule.DB_EXCEPTION_MSG;
 						break;
 					}
 					break;
 				}
 				if (errMsg.equals("")) {
-					JOptionPane.showMessageDialog(mainFrame, RecordModule.INSERT_SUCC_MSG, CommonModule.SUCC, 
+					JOptionPane.showMessageDialog(mainFrame, CommonModule.MODIFY_SUCC_MSG, CommonModule.SUCC, 
 							JOptionPane.INFORMATION_MESSAGE);
-					new QueryRecord();
+					new QueryRecord().show();
 					mainFrame.dispose();
 				} else {
 					JOptionPane.showMessageDialog(mainFrame, errMsg, 
@@ -241,21 +231,21 @@ public class ModifyRecord {
 				rc = JOptionPane.showConfirmDialog(mainFrame, RecordModule.DELETE_CONFIRM_MSG, CommonModule.DELETE, 
 						JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
 				if (rc == 0) {
-					rc = recordModule.remove(record.getRecord_id());
+					rc = recordModule.remove(record.getRecord_id(), LoginData.getLedger().getLedger_id());
 					if (rc == RecordModule.DB_CONNECT_FAIL_RC) {
-						errMsg = RecordModule.DELETE_FAIL_MSG + " " + RecordModule.DB_CONNECT_FAIL_MSG;
+						errMsg = CommonModule.DELETE_FAIL_MSG + " " + RecordModule.DB_CONNECT_FAIL_MSG;
 					}
 					if (rc == RecordModule.DB_EXCEPTION_RC) {
-						errMsg = RecordModule.DELETE_FAIL_MSG + " " + RecordModule.DB_EXCEPTION_MSG;
+						errMsg = CommonModule.DELETE_FAIL_MSG + " " + RecordModule.DB_EXCEPTION_MSG;
 					}
 					if (errMsg.equals("")) {
-						JOptionPane.showMessageDialog(mainFrame, RecordModule.DELETE_SUCC_MSG, CommonModule.SUCC, 
+						JOptionPane.showMessageDialog(mainFrame, CommonModule.DELETE_SUCC_MSG, CommonModule.SUCC, 
 								JOptionPane.INFORMATION_MESSAGE);
 					} else {
 						JOptionPane.showMessageDialog(mainFrame, errMsg, 
 								CommonModule.ERROR, JOptionPane.ERROR_MESSAGE);
 					}
-					new QueryRecord();
+					new QueryRecord().show();
 					mainFrame.dispose();
 				}
 			}
@@ -268,7 +258,7 @@ public class ModifyRecord {
 		btn_Return.setFont(new Font("Microsoft JhengHei UI", Font.BOLD, 24));
 		btn_Return.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				new QueryRecord();
+				new QueryRecord().show();
 				mainFrame.dispose();
 			}
 		});
