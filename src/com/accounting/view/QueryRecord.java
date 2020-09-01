@@ -33,6 +33,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.ActionEvent;
 import javax.swing.JComboBox;
+
 import java.awt.Color;
 
 public class QueryRecord {
@@ -75,7 +76,8 @@ public class QueryRecord {
 	private void initialize() {
 		mainFrame = new JFrame();
 		mainFrame.setTitle("\u5E33\u52D9\u5C0F\u7BA1\u5BB6 - \u5E33\u52D9\u67E5\u8A62");
-		mainFrame.setIconImage(Toolkit.getDefaultToolkit().getImage("D:\\Workspace\\Accounting\\ledger.png"));
+//		mainFrame.setIconImage(Toolkit.getDefaultToolkit().getImage(Home.class.getResource("/ledger.png")));
+		mainFrame.setIconImage(Toolkit.getDefaultToolkit().getImage("ledger.png"));
 		mainFrame.setBounds(100, 100, 1456, 910);
 		mainFrame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		mainFrame.addWindowListener(new WindowListener() {
@@ -184,17 +186,6 @@ public class QueryRecord {
 		txt_Memo.setBounds(1218, 50, 153, 34);
 		panel.add(txt_Memo);
 		
-		JButton btn_Return = new JButton("\u8FD4\u56DE");
-		btn_Return.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				new LedgerInfo().show();
-				mainFrame.dispose();
-			}
-		});
-		btn_Return.setFont(new Font("Microsoft JhengHei", Font.BOLD, 20));
-		btn_Return.setBounds(1291, 124, 80, 39);
-		panel.add(btn_Return);
-		
 		JLabel lbl_Record = new JLabel("\u5E33\u52D9\u7D00\u9304");
 		lbl_Record.setFont(new Font("Microsoft JhengHei", Font.BOLD, 28));
 		lbl_Record.setBounds(54, 125, 125, 33);
@@ -238,20 +229,37 @@ public class QueryRecord {
 			}
 		});
 		tbl_Record.getTableHeader().setFont(new Font("Microsoft JhengHei", Font.BOLD, 24));
+		
+		JLabel lbl_Desc = new JLabel("(\u6700\u591A\u986F\u793A500\u7B46\u8CC7\u6599\uFF0C\u96D9\u64CA\u4EE5\u4FEE\u6539\u5E33\u52D9\u8CC7\u6599)");
+		lbl_Desc.setFont(new Font("Microsoft JhengHei", Font.BOLD, 28));
+		lbl_Desc.setBounds(279, 125, 565, 33);
+		panel.add(lbl_Desc);
+		
+		JButton btn_Export = new JButton("\u532F\u51FA\u5831\u8868");
+		btn_Export.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				new SelectReport().show();
+				mainFrame.dispose();
+			}
+		});
+		btn_Export.setFont(new Font("Microsoft JhengHei", Font.BOLD, 20));
+		btn_Export.setBounds(1068, 124, 115, 39);
+		panel.add(btn_Export);
+		
+		JButton btn_Return = new JButton("\u8FD4\u56DE");
+		btn_Return.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				new LedgerInfo().show();
+				mainFrame.dispose();
+			}
+		});
+		btn_Return.setFont(new Font("Microsoft JhengHei", Font.BOLD, 20));
+		btn_Return.setBounds(1291, 124, 80, 39);
+		panel.add(btn_Return);
 		tbl_Record.setFont(new Font("Microsoft YaHei", Font.PLAIN, 24));
 		tbl_Record.setRowHeight(26);
 		tbl_Record.setBounds(71, 571, 834, 612);
 		panel.add(scrollPane);
-		
-		JLabel lbl_Record_1 = new JLabel("(\u6700\u591A\u986F\u793A500\u7B46\u8CC7\u6599\uFF0C\u96D9\u64CA\u4EE5\u4FEE\u6539\u5E33\u52D9\u8CC7\u6599)");
-		lbl_Record_1.setFont(new Font("Microsoft JhengHei", Font.BOLD, 28));
-		lbl_Record_1.setBounds(279, 125, 565, 33);
-		panel.add(lbl_Record_1);
-		
-		JButton btn_Return_1 = new JButton("\u532F\u51FA\u5831\u8868");
-		btn_Return_1.setFont(new Font("Microsoft JhengHei", Font.BOLD, 20));
-		btn_Return_1.setBounds(1068, 124, 115, 39);
-		panel.add(btn_Return_1);
 		
 		itemListener = new ItemListener() {
 			public void itemStateChanged(ItemEvent e) {

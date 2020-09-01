@@ -113,6 +113,7 @@ public class LedgerModule {
 		LedgerDao ledgerDao = new LedgerDao(conn);
 		rc = ledgerDao.modifyLedger(ledger);
 		if (rc != 0) {
+			if (rc == 2627) rc = LEDGER_NAME_EXISTED_RC;
 			try {
 				conn.rollback();
 			} catch (SQLException e) {
@@ -198,7 +199,7 @@ public class LedgerModule {
 		RecordDao recordDao = new RecordDao(conn);
 		Calendar c = Calendar.getInstance();
 		date = String.format("%04d/%02d", c.get(Calendar.YEAR), c.get(Calendar.MONTH) + 1);
-		amount = recordDao.getAmountOfMonth(date, ledger_id);
+		amount = recordDao.getAmountOfDate(date, ledger_id);
 		if (amount < 0) {
 			amount = -(DB_EXCEPTION_RC);
 		}

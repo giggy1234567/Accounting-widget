@@ -3,7 +3,6 @@ package com.accounting.module;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Calendar;
 
 import com.accounting.db.Asset;
 import com.accounting.db.AssetDao;
@@ -18,6 +17,8 @@ public class AssetModule {
 	public static final int ASSET_NAME_EXISTED_RC = 3;
 	public static final String ASSET_NAME_EXISTED_MSG = "該資產項目已存在\n請重新輸入";
 	public static final String SELECT_EMPTY_MSG = "請選擇資產項目";
+	public static final String ENTER_EMPTY_MSG = "請輸入資產項目名稱";
+	public static final String INSERT_ASSET_MSG = "新增資產";
 	
 	public int createDefault(String ledger_id) {
 		int rc = 0;
@@ -64,12 +65,13 @@ public class AssetModule {
 		AssetDao assetDao = new AssetDao(conn);
 		rc = assetDao.addAsset(new Asset(asset_name, ledger_id));
 		if (rc != 0) {
+			if (rc == 2627) rc = AssetModule.ASSET_NAME_EXISTED_RC;
+			else rc = AssetModule.DB_EXCEPTION_RC;
 			try {
 				conn.rollback();
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
-			rc = DB_EXCEPTION_RC;
 		}
 		try {
 			conn.commit();
@@ -81,19 +83,20 @@ public class AssetModule {
 		return rc;
 	}
 	
-	public int modify(String oldName, Asset asset) {
+	public int modify(String oldName, String ledger_id, String newName) {
 		int rc = 0;
 		Connection conn = DBConnection.getConnection();
 		if (conn == null) return DB_CONNECT_FAIL_RC;
 		AssetDao assetDao = new AssetDao(conn);
-		rc = assetDao.modifyAsset(oldName, asset);
+		rc = assetDao.modifyAsset(oldName, new Asset(newName, ledger_id));
 		if (rc != 0) {
+			if (rc == 2627) rc = AssetModule.ASSET_NAME_EXISTED_RC;
+			else rc = AssetModule.DB_EXCEPTION_RC;
 			try {
 				conn.rollback();
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
-			rc = DB_EXCEPTION_RC;
 		}
 		try {
 			conn.commit();
@@ -129,15 +132,29 @@ public class AssetModule {
 		return rc;
 	}
 	
-	public int monthStat(Asset asset) {
+	public int monthStat(String date, Asset asset) {
 		int amount = 0;
-		String date = "";
 		Connection conn = DBConnection.getConnection();
 		if (conn == null) return -(DB_CONNECT_FAIL_RC);
 		RecordDao recordDao = new RecordDao(conn);
-		Calendar c = Calendar.getInstance();
-		date = String.format("%04d/%02d", c.get(Calendar.YEAR), c.get(Calendar.MONTH) + 1);
-		amount = recordDao.getAmountOfMonth(date, asset);
+		amount = recordDao.getAmountOfDate(date, asset);
+		if (amount < 0) {
+			amount = -(DB_EXCEPTION_RC);
+		}
+		try {
+			conn.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return amount;
+	}
+	
+	public int yearStat(String date, Asset asset) {
+		int amount = 0;
+		Connection conn = DBConnection.getConnection();
+		if (conn == null) return -(DB_CONNECT_FAIL_RC);
+		RecordDao recordDao = new RecordDao(conn);
+		amount = recordDao.getAmountOfDate(date, asset);
 		if (amount < 0) {
 			amount = -(DB_EXCEPTION_RC);
 		}

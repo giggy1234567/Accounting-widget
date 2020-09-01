@@ -3,7 +3,6 @@ package com.accounting.module;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Calendar;
 
 import com.accounting.db.DBConnection;
 import com.accounting.db.Expenditure;
@@ -18,6 +17,8 @@ public class ExpenditureModule {
 	public static final int EXPEND_NAME_EXISTED_RC = 3;
 	public static final String EXPEND_NAME_EXISTED_MSG = "該支出項目已存在\n請重新輸入";
 	public static final String SELECT_EMPTY_MSG = "請選擇支出項目";
+	public static final String ENTER_EMPTY_MSG = "請輸入選擇支出項目名稱";
+	public static final String INSERT_EXPEND_MSG = "新增支出";
 	
 	public int createDefault(String ledger_id) {
 		int rc = 0;
@@ -64,12 +65,13 @@ public class ExpenditureModule {
 		ExpenditureDao expendDao = new ExpenditureDao(conn);
 		rc = expendDao.addExpenditure(new Expenditure(expend_name, ledger_id));
 		if (rc != 0) {
+			if (rc == 2627) rc = ExpenditureModule.EXPEND_NAME_EXISTED_RC;
+			else rc = ExpenditureModule.DB_EXCEPTION_RC;
 			try {
 				conn.rollback();
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
-			rc = DB_EXCEPTION_RC;
 		}
 		try {
 			conn.commit();
@@ -81,19 +83,20 @@ public class ExpenditureModule {
 		return rc;
 	}
 	
-	public int modify(String oldName, Expenditure expend) {
+	public int modify(String oldName, String ledger_id, String newName) {
 		int rc = 0;
 		Connection conn = DBConnection.getConnection();
 		if (conn == null) return DB_CONNECT_FAIL_RC;
 		ExpenditureDao expendDao = new ExpenditureDao(conn);
-		rc = expendDao.modifyExpend(oldName, expend);
+		rc = expendDao.modifyExpend(oldName, new Expenditure(newName, ledger_id));
 		if (rc != 0) {
+			if (rc == 2627) rc = ExpenditureModule.EXPEND_NAME_EXISTED_RC;
+			else rc = ExpenditureModule.DB_EXCEPTION_RC;
 			try {
 				conn.rollback();
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
-			rc = DB_EXCEPTION_RC;
 		}
 		try {
 			conn.commit();
@@ -129,15 +132,12 @@ public class ExpenditureModule {
 		return rc;
 	}
 	
-	public int monthStat(Expenditure expend) {
+	public int monthStat(String date, Expenditure expend) {
 		int amount = 0;
-		String date = "";
 		Connection conn = DBConnection.getConnection();
 		if (conn == null) return -(DB_CONNECT_FAIL_RC);
 		RecordDao recordDao = new RecordDao(conn);
-		Calendar c = Calendar.getInstance();
-		date = String.format("%04d/%02d", c.get(Calendar.YEAR), c.get(Calendar.MONTH) + 1);
-		amount = recordDao.getAmountOfMonth(date, expend);
+		amount = recordDao.getAmountOfDate(date, expend);
 		if (amount < 0) {
 			amount = -(DB_EXCEPTION_RC);
 		}

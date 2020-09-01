@@ -56,7 +56,8 @@ public class Index {
 	 */
 	private void initialize() {
 		mainFrame = new JFrame();
-		mainFrame.setIconImage(Toolkit.getDefaultToolkit().getImage("D:\\Workspace\\Accounting\\ledger.png"));
+//		mainFrame.setIconImage(Toolkit.getDefaultToolkit().getImage(Home.class.getResource("/ledger.png")));
+		mainFrame.setIconImage(Toolkit.getDefaultToolkit().getImage("ledger.png"));
 		mainFrame.setResizable(false);
 		mainFrame.setBounds(100, 100, 610, 712);
 		mainFrame.setTitle(String.format("帳務小管家 - %s", user.getUser_name()));

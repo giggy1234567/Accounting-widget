@@ -245,7 +245,7 @@ public class RecordDao {
 		return rc;
 	}
 	
-	public int getAmountOfMonth(String date, String ledger_id) {
+	public int getAmountOfDate(String date, String ledger_id) {
 		int amount = 0;
 		String sql = "select sum(cast(amount as int)) from [record] where ledger_id = ? and record_date like ?";
 		PreparedStatement pstmt = null;
@@ -253,7 +253,7 @@ public class RecordDao {
 		try {
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, ledger_id);
-			pstmt.setString(2, date.substring(0, 7) + "%");
+			pstmt.setString(2, date + "%");
 			rset = pstmt.executeQuery();
 			while (rset.next()) amount = rset.getInt(1);
 			pstmt.closeOnCompletion();
@@ -265,7 +265,7 @@ public class RecordDao {
 		return amount;
 	}
 	
-	public int getAmountOfMonth(String date, Expenditure expend) {
+	public int getAmountOfDate(String date, Expenditure expend) {
 		int amount = 0;
 		String sql = "select sum(cast(amount as int)) from [record] where "
 				+ "ledger_id = ? and expend_name = ? and record_date like ?";
@@ -275,7 +275,7 @@ public class RecordDao {
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, expend.getLedger_id());
 			pstmt.setString(2, expend.getExpend_name());
-			pstmt.setString(3, date.substring(0, 7) + "%");
+			pstmt.setString(3, date + "%");
 			rset = pstmt.executeQuery();
 			while (rset.next()) amount = rset.getInt(1);
 			pstmt.closeOnCompletion();
@@ -287,7 +287,7 @@ public class RecordDao {
 		return amount;
 	}
 	
-	public int getAmountOfMonth(String date, Asset asset) {
+	public int getAmountOfDate(String date, Asset asset) {
 		int amount = 0;
 		String sql = "select sum(cast(amount as int)) from [record] where "
 				+ "ledger_id = ? and asset_name = ? and record_date like ?";
@@ -297,7 +297,7 @@ public class RecordDao {
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, asset.getLedger_id());
 			pstmt.setString(2, asset.getAsset_name());
-			pstmt.setString(3, date.substring(0, 7) + "%");
+			pstmt.setString(3, date + "%");
 			rset = pstmt.executeQuery();
 			while (rset.next()) amount = rset.getInt(1);
 			pstmt.closeOnCompletion();

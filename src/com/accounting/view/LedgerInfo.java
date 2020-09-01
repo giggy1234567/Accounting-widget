@@ -69,7 +69,8 @@ public class LedgerInfo {
 	private void initialize() {
 		mainFrame = new JFrame();
 		mainFrame.setIconImage(Toolkit.getDefaultToolkit().getImage("D:\\Workspace\\Accounting\\ledger.png"));
-		mainFrame.setTitle("\u5E33\u52D9\u5C0F\u7BA1\u5BB6 - \u5E33\u52D9\u7E3D\u89BD");
+//		mainFrame.setIconImage(Toolkit.getDefaultToolkit().getImage(Home.class.getResource("/ledger.png")));
+		mainFrame.setIconImage(Toolkit.getDefaultToolkit().getImage("ledger.png"));
 		mainFrame.setResizable(false);
 		mainFrame.setBounds(100, 100, 1470, 910);
 		mainFrame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
@@ -144,8 +145,19 @@ public class LedgerInfo {
 				mainFrame.dispose();
 			}
 		});
+		
+		JButton button_Ledger = new JButton("\u7DE8\u8F2F\u5E33\u672C");
+		button_Ledger.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				new ModifyLedger().show();
+				mainFrame.dispose();
+			}
+		});
+		button_Ledger.setFont(new Font("Microsoft JhengHei", Font.BOLD, 24));
+		button_Ledger.setBounds(1001, 42, 140, 48);
+		panel.add(button_Ledger);
 		button_Return.setFont(new Font("Microsoft JhengHei", Font.BOLD, 20));
-		button_Return.setBounds(1226, 42, 162, 41);
+		button_Return.setBounds(1226, 42, 162, 48);
 		panel.add(button_Return);
 		
 		JLabel lbl_Month = new JLabel("");
@@ -171,7 +183,8 @@ public class LedgerInfo {
 		Object asset_tbl_data[][] = new Object[asset_List.size() == 0 ? 4 : asset_List.size()][];
 		for (int i = 0; i < asset_List.size(); i++) {
 			Asset e = asset_List.get(i);
-			int asset_month_amount = assetModule.monthStat(e);
+			int asset_month_amount = assetModule.monthStat(
+					String.format("%04d/%02d", c.get(Calendar.YEAR), c.get(Calendar.MONTH) + 1), e);
 			double rate = 0.0;
 			if (asset_month_amount < 0) {
 				System.err.printf("Stat Error [%d]", asset_month_amount);
@@ -204,7 +217,7 @@ public class LedgerInfo {
 		JButton button_Asset = new JButton("\u8CC7\u7522\u7BA1\u7406");
 		button_Asset.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				new ManageAsset();
+				new ManageAsset().show();
 				mainFrame.dispose();
 			}
 		});
@@ -215,7 +228,7 @@ public class LedgerInfo {
 		JButton button_Expend = new JButton("\u652F\u51FA\u7BA1\u7406");
 		button_Expend.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				new ManageExpend();
+				new ManageExpend().show();
 				mainFrame.dispose();
 			}
 		});
@@ -230,7 +243,8 @@ public class LedgerInfo {
 		Object expend_tbl_data[][] = new Object[expend_List.size() == 0 ? 4 : expend_List.size()][];
 		for (int i = 0; i < expend_List.size(); i++) {
 			Expenditure e = expend_List.get(i);
-			int expend_month_amount = expendModule.monthStat(e);
+			int expend_month_amount = expendModule.monthStat(
+					String.format("%04d/%02d", c.get(Calendar.YEAR), c.get(Calendar.MONTH) + 1), e);
 			double rate = 0.0;
 			if (expend_month_amount < 0) {
 				System.err.printf("Stat Error [%d]", expend_month_amount);

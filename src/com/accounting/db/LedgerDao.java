@@ -77,8 +77,14 @@ public class LedgerDao {
 			pstmt.executeUpdate();
 			pstmt.closeOnCompletion();
 		} catch (SQLException e) {
+			System.err.printf("Error Code [%d]\n", e.getErrorCode());
+			try {
+				conn.rollback();
+			} catch (SQLException e1) {
+				e1.printStackTrace();
+			}
 			e.printStackTrace();
-			rc = -1;
+			rc = e.getErrorCode() == 0 ? -1 : e.getErrorCode();
 		}
 		return rc;
 	}
@@ -93,8 +99,14 @@ public class LedgerDao {
 			pstmt.executeUpdate();
 			pstmt.closeOnCompletion();
 		} catch (SQLException e) {
+			System.err.printf("Error Code [%d]\n", e.getErrorCode());
+			try {
+				conn.rollback();
+			} catch (SQLException e1) {
+				e1.printStackTrace();
+			}
 			e.printStackTrace();
-			rc = -1;
+			rc = e.getErrorCode() == 0 ? -1 : e.getErrorCode();
 		}
 		return rc;
 	}

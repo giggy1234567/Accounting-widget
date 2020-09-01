@@ -14,6 +14,7 @@ public class DBConnection {
 	static SQLServerDataSource getDataSource() {
 		Properties properties = new Properties();
 		try {
+//			properties.load(DBConnection.class.getResourceAsStream("/db.properties"));
 			properties.load(new FileInputStream("db.properties"));
 		} catch (IOException e) {
 			e.printStackTrace();

@@ -62,7 +62,8 @@ public class Home {
 	private void initialize() {
 		mainFrame = new JFrame();
 		mainFrame.setResizable(false);
-		mainFrame.setIconImage(Toolkit.getDefaultToolkit().getImage("D:\\Workspace\\Accounting\\ledger.png"));
+//		mainFrame.setIconImage(Toolkit.getDefaultToolkit().getImage(Home.class.getResource("/ledger.png")));
+		mainFrame.setIconImage(Toolkit.getDefaultToolkit().getImage("ledger.png"));
 		mainFrame.setTitle("\u5E33\u52D9\u5C0F\u7BA1\u5BB6");
 		mainFrame.setBounds(100, 100, 562, 576);
 		mainFrame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
